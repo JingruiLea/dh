@@ -58,4 +58,18 @@ public interface ScaleScoreMapper {
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(ScaleScore record);
+
+    @Select({
+            "select",
+            "id, patient_id, score, `time`",
+            "from scale_score ",
+            "where patient_id=#{id}"
+    })
+    @Results({
+            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="patient_id", property="patient_id", jdbcType=JdbcType.INTEGER),
+            @Result(column="score", property="score", jdbcType=JdbcType.VARCHAR),
+            @Result(column="time", property="time", jdbcType=JdbcType.VARCHAR)
+    })
+    List<ScaleScore> selectByPatientId(@Param("id") Integer id);
 }

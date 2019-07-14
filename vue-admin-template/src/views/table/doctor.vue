@@ -38,7 +38,7 @@
         </template>
       </el-table-column>
       <el-table-column label="姓名">
-        <template slot-scope="{row}">`
+        <template slot-scope="{row}">
           {{ row.name }}
         </template>
       </el-table-column>

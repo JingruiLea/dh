@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <!--<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">-->
-        <!--添加量表分数-->
+      <!--添加量表分数-->
       <!--</el-button>-->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-back" @click="back">
         返回
@@ -18,7 +18,7 @@
     >
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="{row}">
-          {{ row.patient_id }}
+          {{ row.id }}
         </template>
       </el-table-column>
       <el-table-column label="分数">
@@ -32,16 +32,38 @@
         </template>
       </el-table-column>
     </el-table>
-    <div ref="chart" style="width: 300px;height: 300px"></div>
+    <el-button class="filter-item" style="margin-left: 10px;margin-top: 30px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+    添加量表分数
+    </el-button>
+
+
+    <el-dialog title="添加量表分数" :visible.sync="dialogFormVisible">
+      <el-form :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="测量时间" prop="username">
+          <el-input v-model="temp.time" />
+        </el-form-item>
+        <el-form-item label="测量分数" prop="username">
+          <el-input v-model="temp.score" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {insert, selectAll, updateByPrimaryKey, selectByPrimaryKey, deleteByPrimaryKey} from '../../api/patient'
+  import {insert, selectAll, updateByPrimaryKey, selectByPrimaryKey, deleteByPrimaryKey} from '../../api/scaleScore'
   import {selectAll as selectAllDoctor} from '../../api/doctor'
-  import {selectByPatientId} from "../../api/trainScore";
+  import {selectByPatientId} from "../../api/scaleScore";
   import bus from '../../bus'
-  import echarts from 'echarts'
+
 
   export default {
     filters: {
@@ -72,24 +94,6 @@
     created() {
       this.id = this.$route.query['id']
       this.getList()
-    },
-    mounted(){
-      let orgOptions = {
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: 'line',
-          smooth: true
-        }]
-      }
-      let chart = echarts.init(this.$refs['chart'])
-      chart.setOption(orgOptions)
     },
     methods: {
       back(){
@@ -140,6 +144,7 @@
         })
       },
       createData(){
+        this.temp.patient_id = this.id
         insert(this.temp).then(res=>{
           this.dialogFormVisible = false
           this.$notify({

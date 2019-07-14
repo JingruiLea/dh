@@ -60,4 +60,19 @@ public interface TrainScoreMapper {
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TrainScore record);
+
+    @Select({
+            "select",
+            "id, patient_id, score, `time`, `path`",
+            "from train_score ",
+            "where patient_id=#{patientId}"
+    })
+    @Results({
+            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="patient_id", property="patient_id", jdbcType=JdbcType.INTEGER),
+            @Result(column="score", property="score", jdbcType=JdbcType.VARCHAR),
+            @Result(column="time", property="time", jdbcType=JdbcType.VARCHAR),
+            @Result(column="path", property="path", jdbcType=JdbcType.VARCHAR)
+    })
+    List<TrainScore> selectByPatientId(@Param("patientId") Integer patientId);
 }

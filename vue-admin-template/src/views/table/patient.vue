@@ -38,7 +38,7 @@
         </template>
       </el-table-column>
       <el-table-column label="姓名">
-        <template slot-scope="{row}">`
+        <template slot-scope="{row}">
           {{ row.name }}
         </template>
       </el-table-column>
@@ -57,30 +57,30 @@
           <span>{{ row.disease_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" width="150px">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(row)">删除</el-button>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="训练数据">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="showDetail(row)">
-            训练数据(页面)
+          <el-button type="primary" size="mini" @click="showTrainDetail(row)">
+            查看训练数据
           </el-button>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="showDetail(row)">
-            量表得分(对话框)
+          <el-button type="primary" size="mini" @click="showScaleDetail(row)">
+            查看量表得分
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm":model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+      <el-form :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item label="姓名" prop="username">
           <el-input v-model="temp.name" />
         </el-form-item>
@@ -108,6 +108,7 @@
         </el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -147,8 +148,11 @@
       })
     },
     methods: {
-      showDetail(row){
-        this.$router.push(`/patientDetail?id=${row.id}`)
+      showTrainDetail(row){
+        this.$router.push(`/patientTrainDetail?id=${row.id}`)
+      },
+      showScaleDetail(row){
+        this.$router.push(`/patientScaleDetail?id=${row.id}`)
       },
       getList() {
         this.listLoading = true

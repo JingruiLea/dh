@@ -18,6 +18,10 @@ export function selectByPrimaryKey(id) {
   return get("selectByPrimaryKey", {id})
 }
 
+export function selectByPatientId(id) {
+  return get("selectByPatientId", {id})
+}
+
 function post(subUrl, data) {
   return request({
     url: `/${prefix}/${subUrl}`,
